@@ -1,0 +1,26 @@
+<meta charset="UTF-8">
+
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8592; 뒤로 가기</a>
+</div>
+
+
+<div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="button" type="submit" value="Submit">
+    </form>
+</div>
+
+
+{% endblock content %}
+
+<!--
+    {% csrf_token %} == POST 방식으로 데이터 전송
+    : form으로 데이터 전송할 때, 해당 토큰이 같이 전달될 수 있도록
+        숨김데이터로 같이 전송해주는 것
+     ==> method가 POST인 것들은 csrf_token으로 암호화해서 저장해줘야 함

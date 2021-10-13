@@ -1,0 +1,68 @@
+<meta charset="UTF-8">
+
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Hello {{request.user|title}}</h1>
+        <h3 style="margin:0">You have <i>{{count}}</i> incomplete task{{count|pluralize:"s"}}</h3>
+    </div>
+
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout'  %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login'  %}">Login</a>
+    {% endif %}
+</div>
+<!-- ~~|pluralize == count값에 따라 복수 접미사 붙여주는 것//결과에 따라 -(e)s가 표시 -->
+
+
+
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top: 20px; display: flex;">
+        <input type="text" name="search-area" value="{{search_input}}">
+        <input class="button" type="submit" value='Search'>
+    </form>
+    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+</div>
+
+
+
+<div class="task.-items-wrapper">
+     {% for task in tasks %}
+        <div class="task-wrapper">
+            {% if task.complete %}
+                <div class="task-title">
+                    <div class="task-complete-icon"></div>
+                    <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i>
+                </div>
+
+            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            {% else %}
+            <div class="task-title">
+                    <div class="task-incomplete-icon"></div>
+                    <a href="{% url 'task-update' task.id %}">{{task}}</a>
+                </div>
+            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            {% endif %}
+
+        </div>
+
+     {% empty %}
+     <h3>No items in List</h3>
+     {% endfor %}
+</div>
+
+
+
+{% endblock content %}
+
+
+
+<!--
+    {% for task in tasks %} ~~ {% endfor %}
+    == 파이썬 문법으로서, 반복한다는 의미
+        task.title에 나열되어있는 post 객체를 하나씩 post에 옮기고
+        <tr>~~</tr>을 반복하면서
+        view, edit, delete를 눌리면 post로 받는 url를 <td>~~</td>에 출력하는 형태

@@ -1,0 +1,19 @@
+<meta charset="UTF-8">
+
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8592;뒤로 가기</a>
+</div>
+
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        <p>정말로 삭제하시겠습니까? "{{task}}"</p>
+        <input  class="button" type = "submit" value="Delete"/>
+    </form>
+</div>
+
+
+{% endblock content %}
